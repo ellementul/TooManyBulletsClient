@@ -1,0 +1,39 @@
+{
+  "name": "tmb-client",
+  "version": "0.0.1",
+  "description": "Multiplayer TDS Game",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ellementul/TooManyBullets.git"
+  },
+  "keywords": [
+    "TDS",
+    "Shooter",
+    "2D",
+    "Multiplayer"
+  ],
+  "author": "GoodQuestion",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ellementul/TooManyBullets/issues"
+  },
+  "homepage": "https://github.com/ellementul/TooManyBullets#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.3",
+    "webpack": "^5.87.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "@ellementul/simple-uee-manager": "^0.7.0",
+    "@ellementul/uee-timeticker": "^1.4.0",
+    "@ellementul/uee-ws-browser-transport": "^0.5.1",
+    "@ellementul/united-events-environment": "^1.2.1"
+  }
+}
