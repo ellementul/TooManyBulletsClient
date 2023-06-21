@@ -11,7 +11,7 @@ class Player extends Member {
   }
 
   ping() {
-    this.send(pongEvent)
+    this.send(pongEvent, { playerUuid: this.uuid })
   }
 }
 

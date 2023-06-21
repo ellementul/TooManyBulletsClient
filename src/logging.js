@@ -6,7 +6,7 @@ function Logging() {
       case "Cooperation":
         break
       default:
-        console.log(payload.message)
+        null
     }
   }
 }
