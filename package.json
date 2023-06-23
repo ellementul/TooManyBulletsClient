@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/ellementul/TooManyBullets#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "html-webpack-plugin": "^5.5.3",
     "webpack": "^5.87.0",
     "webpack-cli": "^5.1.4",
@@ -35,6 +36,7 @@
     "@ellementul/uee-core": "^1.2.2",
     "@ellementul/uee-timeticker": "^1.4.0",
     "@ellementul/uee-ws-browser-transport": "^0.5.1",
-    "@ellementul/united-events-environment": "^1.2.1"
+    "@ellementul/united-events-environment": "^1.2.1",
+    "pixi.js": "^7.2.4"
   }
 }
