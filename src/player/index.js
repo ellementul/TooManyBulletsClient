@@ -3,6 +3,7 @@ const { Store } = require("../store")
 
 const pingEvent = require("../events/ping-players")
 const pongEvent = require("../events/pong-players")
+const loadRenderEvent = require("../events/ready-resources")
 
 const WAIT_FIRST_PING = Symbol("Wait First Ping")
 const GOT_FIRST_PING = Symbol("Got First Ping")
@@ -25,6 +26,7 @@ class Player extends Member {
   }
 
   loadRenderer() {
+    this.send(loadRenderEvent)
     this.ping()
     this._state = READY
   }

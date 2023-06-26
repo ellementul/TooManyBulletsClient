@@ -4,12 +4,17 @@ const { WsTransport } = require('@ellementul/uee-ws-browser-transport')
 const { Logging } = require('./logging')
 
 const { Player } = require('./player')
+const { TileMap } = require('./tile-map')
 
 const membersList = {
   roles: [
     {
       role: "Player",
       memberConstructor: Player
+    },
+    {
+      role: "TileMap",
+      memberConstructor: TileMap
     }
   ]
 }

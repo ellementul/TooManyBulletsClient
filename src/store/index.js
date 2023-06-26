@@ -24,6 +24,13 @@ class Store {
   async loadResources () {
     return await this.loadTextures()
   }
+
+  getTexture(uid) {
+    if(!this.textures.has(uid))
+      throw new Error(`Texture is not found! Uid: ${uid}`)
+
+    return this.textures.get(uid)
+  }
 }
 
 module.exports = { Store }

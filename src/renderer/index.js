@@ -1,4 +1,5 @@
-const { Application }  = require("pixi.js");
+const { Application, Texture, Sprite }  = require("pixi.js")
+const { Store } = require("../store")
 
 let single = null
 class Renderer {
@@ -8,7 +9,25 @@ class Renderer {
     else
       single = this
 
+    this.store = new Store
+
     const app = new Application
     document.body.appendChild(app.view)
+
+    this.stage = app.stage
   }
+
+  addSprite ({ texture, frame, position }) {
+
+    const baseTexture = this.store.getTexture(texture)
+
+    const sprite = new Sprite(new Texture(baseTexture, frame))
+    sprite.position.x = position.x
+    sprite.position.y = position.y
+    
+    this.stage.addChild(sprite)
+  }
+
 }
+
+module.exports = { Renderer }
