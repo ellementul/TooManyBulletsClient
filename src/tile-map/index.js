@@ -19,7 +19,7 @@ class TileMap extends Member {
   }
 
   update({ state: { layers } }){
-    const { tiles, tileSize, size } = layers[0]
+    const { tiles, tileSize, size } = layers["background"]
 
     tiles.forEach(({ texture, position: { row, column }, frame }) => {
       const tileHash = this.hash({ texture, position: { row, column } })
