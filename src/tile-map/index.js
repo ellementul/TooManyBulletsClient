@@ -18,12 +18,14 @@ class TileMap extends Member {
     this.onEvent(updateEvent, payload => this.update(payload))
   }
 
-  update({ state: { tiles } }){
+  update({ state: { layers } }){
+    const { tiles, tileSize, size } = layers[0]
+
     tiles.forEach(({ texture, position: { row, column }, frame }) => {
       const tileHash = this.hash({ texture, position: { row, column } })
       const position = {
-        x: column * 96,
-        y: row * 96,
+        x: column * tileSize.width,
+        y: row * tileSize.height,
       }
 
       if(!this.tiles.has(tileHash)) {
