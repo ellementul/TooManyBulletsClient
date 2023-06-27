@@ -24,7 +24,7 @@ class Renderer {
     const sprite = new Sprite(new Texture(baseTexture, frame))
     sprite.position.x = position.x
     sprite.position.y = position.y
-    
+
     this.stage.addChild(sprite)
   }
 

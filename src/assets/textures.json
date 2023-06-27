@@ -1,3 +1,4 @@
 {
-  "texture-uuid": "assets/tilesets/TestTileSet.png"
+  "ground": "assets/tilesets/ground.png",
+  "woods": "assets/tilesets/green.png"
 }

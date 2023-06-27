@@ -19,10 +19,16 @@ class TileMap extends Member {
   }
 
   update({ state: { layers } }){
-    const { tiles, tileSize, size } = layers["background"]
+
+    this.updateLayer(layers["background"])
+    this.updateLayer(layers["walls"])
+  }
+
+  updateLayer(layer) {
+    const { tiles, tileSize, size, name } = layer
 
     tiles.forEach(({ texture, position: { row, column }, frame }) => {
-      const tileHash = this.hash({ texture, position: { row, column } })
+      const tileHash = this.hash({ texture, position: { row, column }, layerName: name })
       const position = {
         x: column * tileSize.width,
         y: row * tileSize.height,
@@ -35,8 +41,8 @@ class TileMap extends Member {
     });
   }
 
-  hash({ texture, position }) {
-    return texture + "r" + position.row + "c" + position.column
+  hash({ texture, position: { row, column }, layerName }) {
+    return texture + "r" + row + "c" + column + layerName
   }
 }
 
