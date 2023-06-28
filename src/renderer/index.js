@@ -11,7 +11,7 @@ class Renderer {
 
     this.store = new Store
 
-    const app = new Application
+    const app = new Application({ width: 96*16, height: 96*16 })
     document.body.appendChild(app.view)
 
     this.stage = app.stage
