@@ -6,6 +6,7 @@ const { Logging } = require('./logging')
 const { Player } = require('./player')
 const { TileMap } = require('./tile-map')
 const { Characters } = require('./characters')
+const { Actions } = require('./actions')
 
 const membersList = {
   roles: [
@@ -20,6 +21,10 @@ const membersList = {
     {
       role: "Characters",
       memberConstructor: Characters
+    },
+    {
+      role: "Actions",
+      memberConstructor: Actions
     }
   ]
 }

@@ -22,6 +22,8 @@ class Characters extends Member {
     characters.forEach(character => {
       if(!this.characters.has(character.uuid))
         this.createCharacter(character)
+      else
+        this.updateCharacter(character)
     });
   }
 
@@ -65,8 +67,11 @@ class Characters extends Member {
     this.characters.set(uuid, character)
   }
 
-  updateCaharcter() {
+  updateCharacter({ uuid, position }) {
+    const character = this.characters.get(uuid)
 
+    character.position.x = position.x
+    character.position.y = position.y
   }
 }
 

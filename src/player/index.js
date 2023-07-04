@@ -8,9 +8,16 @@ const loadRenderEvent = require("../events/ready-resources")
 const WAIT_FIRST_PING = Symbol("Wait First Ping")
 const GOT_FIRST_PING = Symbol("Got First Ping")
 const READY = Symbol("Ready")
+
+let single = null
 class Player extends Member {
   constructor() {
     super()
+
+    if(single)
+      return single
+    else
+      single = this
 
     this.onEvent(pingEvent, () => this.ping())
 
