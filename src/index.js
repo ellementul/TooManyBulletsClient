@@ -5,6 +5,7 @@ const { Logging } = require('./logging')
 
 const { Player } = require('./player')
 const { TileMap } = require('./tile-map')
+const { Characters } = require('./characters')
 
 const membersList = {
   roles: [
@@ -15,6 +16,10 @@ const membersList = {
     {
       role: "TileMap",
       memberConstructor: TileMap
+    },
+    {
+      role: "Characters",
+      memberConstructor: Characters
     }
   ]
 }
@@ -30,5 +35,5 @@ env = new UEE({
 
 env.run({
   isHost: false,
-  signalServerAddress: "ws://127.0.0.1:8080",
+  signalServerAddress: "ws://192.168.0.4:8080",
 })

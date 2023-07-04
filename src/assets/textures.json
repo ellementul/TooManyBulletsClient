@@ -1,4 +1,7 @@
 {
-  "ground": "assets/tilesets/ground.png",
-  "woods": "assets/tilesets/green.png"
+  "error": "assets/error_tile.svg",
+  "ground": "assets/tilesets/tileset_default.svg",
+  "woods": "assets/tilesets/walls_default.svg",
+  "default_head": "assets/default_head.svg",
+  "default_body": "assets/default_body.svg"
 }

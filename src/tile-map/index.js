@@ -19,9 +19,8 @@ class TileMap extends Member {
   }
 
   update({ state: { layers } }){
-
-    this.updateLayer(layers["background"])
     this.updateLayer(layers["walls"])
+    this.updateLayer(layers["background"])
   }
 
   updateLayer(layer) {
@@ -36,7 +35,7 @@ class TileMap extends Member {
 
       if(!this.tiles.has(tileHash)) {
         this.tiles.add(tileHash)
-        this.renderer.addSprite({ texture, position, frame })
+        this.renderer.addSprite({ texture, position, frame, layerName: name })
       }
     });
   }

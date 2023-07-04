@@ -37,6 +37,7 @@
     "@ellementul/uee-timeticker": "^1.4.0",
     "@ellementul/uee-ws-browser-transport": "^0.5.1",
     "@ellementul/united-events-environment": "^1.2.1",
-    "pixi.js": "^7.2.4"
+    "pixi-viewport": "^5.0.1",
+    "pixi.js": "7.1.1"
   }
 }
