@@ -1,5 +1,4 @@
 const { UnitedEventsEnvironment: UEE } = require('@ellementul/united-events-environment')
-const { Manager } =  require("@ellementul/simple-uee-manager")
 const { WsTransport } = require('@ellementul/uee-ws-browser-transport')
 const { Logging } = require('./logging')
 
@@ -10,35 +9,19 @@ const { Actions } = require('./actions')
 
 const membersList = {
   roles: [
-    {
-      role: "Player",
-      memberConstructor: Player
-    },
-    {
-      role: "TileMap",
-      memberConstructor: TileMap
-    },
-    {
-      role: "Characters",
-      memberConstructor: Characters
-    },
-    {
-      role: "Actions",
-      memberConstructor: Actions
-    }
+    Player,
+    TileMap,
+    Characters,
+    Actions
   ]
 }
 
 env = new UEE({
   Transport: WsTransport,
-  Manager,
   membersList,
   logging: Logging(),
   isShowErrors: true
 })
 
 
-env.run({
-  isHost: false,
-  signalServerAddress: "ws://192.168.0.4:8080",
-})
+env.run({ signalServerAddress: "ws://192.168.0.4:8080" })
