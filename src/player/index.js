@@ -14,11 +14,7 @@ class Player extends Member {
   constructor() {
     super()
 
-    if(single)
-      return single
-    else
-      single = this
-
+    single = this
     this.onEvent(pingEvent, () => this.ping())
 
     this._state = WAIT_FIRST_PING
@@ -46,4 +42,7 @@ class Player extends Member {
   }
 }
 
-module.exports = { Player }
+module.exports = { 
+  Player,
+  getPlayerUuid: () => single.uuid
+}

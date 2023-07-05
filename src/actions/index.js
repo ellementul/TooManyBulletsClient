@@ -1,5 +1,5 @@
 const { Member } = require('@ellementul/united-events-environment')
-const { Player } = require("../player")
+const { getPlayerUuid } = require("../player")
 
 const runEvent = require("../events/ready-resources")
 const movingEvent = require("../events/moving-direct")
@@ -28,8 +28,6 @@ class Actions extends Member {
       "s": ["moveAction", BOTTOM],
       "a": ["moveAction", LEFT],
     }
-
-    this._palyer = new Player
 
     this._movingDirect = { x: 0, y: 0 }
   }
@@ -81,7 +79,7 @@ class Actions extends Member {
 
     this.send(movingEvent, {
       state: {
-        playerUuid: this._palyer.uuid,
+        playerUuid: getPlayerUuid(),
         direct: this._movingDirect
       }
     })
