@@ -72,7 +72,6 @@ class Renderer {
       sprite.pivot.y = sprite.height / 2
     }
 
-    console.log(this.sprites.size)
     return sprite
   }
 
