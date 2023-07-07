@@ -46,6 +46,7 @@ class Characters extends Member {
     }
 
     const character = this.renderer.addSpritesAsOne({
+      uuid,
       sprites: [
         {
           position: coordinate_body,

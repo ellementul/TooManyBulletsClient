@@ -52,6 +52,8 @@ class Renderer {
       }
       LAYERS.set(name, layers[index])
     }
+
+    this.sprites = new Map
   }
 
   createSprite({ texture: textureName, frame, position, isCentred = false }) {
@@ -70,24 +72,33 @@ class Renderer {
       sprite.pivot.y = sprite.height / 2
     }
 
+    console.log(this.sprites.size)
     return sprite
   }
 
-  addSprite ({ texture, frame, position, layerName }) {
+  addSprite ({ uuid, texture, frame, position, layerName }) {
 
     const sprite = this.createSprite({ texture, frame, position })
 
     LAYERS.get(layerName || DEFAULT_LAYER).addChild(sprite)
 
+    this.sprites.set(uuid, sprite)
     return sprite
   }
 
-  addSpritesAsOne({ sprites: newSprites, layerName }) {
+  deleteSprite(uuid, layerName) {
+    const sprite = this.sprites.get(uuid)
+    LAYERS.get(layerName).removeChild(sprite)
+    this.sprites.delete(uuid)
+  }
+
+  addSpritesAsOne({ uuid, sprites: newSprites, layerName }) {
     const container = new Container
     newSprites.map( newSprite => container.addChild(this.createSprite(newSprite)) )
 
     LAYERS.get(layerName || DEFAULT_LAYER).addChild(container)
 
+    this.sprites.set(uuid, container)
     return container
   }
 

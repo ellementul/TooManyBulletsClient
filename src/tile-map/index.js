@@ -9,7 +9,7 @@ class TileMap extends Member {
     super()
 
     this.renderer = new Renderer
-    this.tiles = new Set
+    this.layers = new Map
 
     this.onEvent(runEvent, () => this.run())
   }
@@ -19,29 +19,52 @@ class TileMap extends Member {
   }
 
   update({ state: { layers } }){
-    this.updateLayer(layers["walls"])
-    this.updateLayer(layers["background"])
+    layers.forEach(layer => this.updateLayer(layer));
   }
 
   updateLayer(layer) {
-    const { tiles, tileSize, size, name } = layer
+    const { uuid, type, tiles, tileSize } = layer
 
-    tiles.forEach(({ texture, position: { row, column }, frame }) => {
-      const tileHash = this.hash({ texture, position: { row, column }, layerName: name })
-      const position = {
-        x: column * tileSize.width,
-        y: row * tileSize.height,
-      }
+    if(!this.layers.has(uuid))
+      this.layers.set(uuid, {
+        uuid,
+        type,
+        tiles: new Set
+      })
 
-      if(!this.tiles.has(tileHash)) {
-        this.tiles.add(tileHash)
-        this.renderer.addSprite({ texture, position, frame, layerName: name })
-      }
-    });
+    const updatedTiles = new Set
+    const oldTiles = this.layers.get(uuid).tiles
+
+    tiles.forEach(tile => this.updateTiles(tile, type,  tileSize, oldTiles, updatedTiles))
+
+    this.layers.get(uuid).tiles = updatedTiles
+
+    oldTiles.forEach(tileUuid => this.renderer.deleteSprite(tileUuid, type))
   }
 
-  hash({ texture, position: { row, column }, layerName }) {
-    return texture + "r" + row + "c" + column + layerName
+  updateTiles(
+    { 
+      uuid, 
+      texture, 
+      position: { row, column }, 
+      frame 
+    }, 
+    type, 
+    tileSize, 
+    oldTiles, 
+    updatedTiles
+  ) {
+    const position = {
+      x: column * tileSize.width,
+      y: row * tileSize.height,
+    }
+  
+    updatedTiles.add(uuid)
+
+    if(!oldTiles.has(uuid))
+      this.renderer.addSprite({uuid, texture, position, frame, layerName: type })
+  
+    oldTiles.delete(uuid)
   }
 }
 
