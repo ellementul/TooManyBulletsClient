@@ -7,7 +7,8 @@ const DEFAULT_LAYER = "background"
 const LAYERS = new Map([
   ["background", 0],
   ["walls", 1],
-  ["characters", 2]
+  ["characters", 2],
+  ["foreground", 3]
 ])
 
 let single = null

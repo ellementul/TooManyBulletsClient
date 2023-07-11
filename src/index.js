@@ -5,6 +5,7 @@ const { Logging } = require('./logging')
 const { Player } = require('./player')
 const { TileMap } = require('./tile-map')
 const { Characters } = require('./characters')
+const { Bullets } = require('./bullets')
 const { Actions } = require('./actions')
 
 const membersList = {
@@ -12,6 +13,7 @@ const membersList = {
     Player,
     TileMap,
     Characters,
+    Bullets,
     Actions
   ]
 }

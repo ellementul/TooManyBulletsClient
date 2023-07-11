@@ -3,5 +3,6 @@
   "ground": "assets/tilesets/tileset_default.svg",
   "woods": "assets/tilesets/walls_default.svg",
   "default_head": "assets/default_head.svg",
-  "default_body": "assets/default_body.svg"
+  "default_body": "assets/default_body.svg",
+  "default_bullet": "assets/default_bullet.svg"
 }
