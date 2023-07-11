@@ -3,6 +3,7 @@ const { getPlayerUuid } = require("../player")
 
 const runEvent = require("../events/ready-resources")
 const movingEvent = require("../events/moving-direct")
+const shotEvent = require("../events/shot-action")
 
 const TOP = "Top"
 const RIGHT = "Right"
@@ -27,6 +28,7 @@ class Actions extends Member {
       "d": ["moveAction", RIGHT],
       "s": ["moveAction", BOTTOM],
       "a": ["moveAction", LEFT],
+      " ": ["shotAction"],
     }
 
     this._movingDirect = { x: 0, y: 0 }
@@ -57,6 +59,19 @@ class Actions extends Member {
       delete CURRENT_DIRECTS[direct]
     
     this.calculateMovingDirect(CURRENT_DIRECTS)
+  }
+
+  shotAction(isDown) {
+    if(isDown)
+      this.send(shotEvent, {
+        state: {
+          playerUuid: getPlayerUuid(),
+          direct: {
+            x: 1,
+            y: 0
+          }
+        }
+      })
   }
 
   calculateMovingDirect(CURRENT_DIRECTS) {
