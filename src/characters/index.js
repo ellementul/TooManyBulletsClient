@@ -4,6 +4,7 @@ const { Renderer } = require("../renderer")
 const runEvent = require("../events/ready-resources")
 const updateEvent = require("../events/update-characters")
 
+const DEFAULT_LAYER = "characters"
 class Characters extends Member {
   constructor() {
     super()
@@ -19,16 +20,29 @@ class Characters extends Member {
   }
 
   update({ state: characters }) {
+    const oldCharacters = this.characters
+    const newCharacters = new Map
+
     characters.forEach(character => {
-      if(!this.characters.has(character.uuid))
-        this.createCharacter(character)
-      else
-        this.updateCharacter(character)
-    });
+      if(!this.characters.has(character.uuid)) {
+        newCharacters.set(character.uuid, this.createCharacter(character))
+      }
+      else {
+        const sprite = this.characters.get(character.uuid)
+        oldCharacters.delete(character.uuid)
+        this.updateCharacter(sprite, character)
+        newCharacters.set(character.uuid, sprite)
+      }
+    })
+
+    for (const [uuid, _] of oldCharacters) {
+      this.renderer.deleteSprite(uuid, DEFAULT_LAYER)
+    }
+
+    this.characters = newCharacters
   }
 
   createCharacter({ uuid, position, box: hitBox }) {
-    console.log("Created character", uuid)
 
     const viewBox = { width: 256, height: 360 }
     const shiftPosition = { 
@@ -59,18 +73,16 @@ class Characters extends Member {
           isCentred: true
         },
       ],
-      layerName: "characters"
+      layerName: DEFAULT_LAYER
     })
 
     character.position.x = position.x
     character.position.y = position.y
 
-    this.characters.set(uuid, character)
+    return character
   }
 
-  updateCharacter({ uuid, position }) {
-    const character = this.characters.get(uuid)
-
+  updateCharacter(character, { position }) {
     character.position.x = position.x
     character.position.y = position.y
   }
