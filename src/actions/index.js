@@ -1,4 +1,5 @@
 const { Member } = require('@ellementul/united-events-environment')
+const { Renderer } = require("../renderer")
 const { getPlayerUuid } = require("../player")
 
 const runEvent = require("../events/ready-resources")
@@ -23,6 +24,8 @@ class Actions extends Member {
     super()
     this.onEvent(runEvent, () => this.run())
 
+    this.renderer = new Renderer
+
     this.actions = {
       "w": ["moveAction", TOP],
       "d": ["moveAction", RIGHT],
@@ -32,9 +35,14 @@ class Actions extends Member {
     }
 
     this._movingDirect = { x: 0, y: 0 }
+    this._shotDirect = { x: 1, y: 0}
   }
 
   run() {
+    this.renderer.stage.on('mousemove', (event) => {
+      this._shotDirect = this.renderer.toDirectFromCenter(event.global)
+    })
+
     document.addEventListener("keydown", event => {
       if(this.actions[event.key]) {
         const [method, ...args] = this.actions[event.key]
@@ -66,10 +74,7 @@ class Actions extends Member {
       this.send(shotEvent, {
         state: {
           playerUuid: getPlayerUuid(),
-          direct: {
-            x: 1,
-            y: 0
-          }
+          direct: this._shotDirect
         }
       })
   }

@@ -36,11 +36,11 @@ class Renderer {
       events: app.renderer.events
     })
 
-    this.stage
-      .drag()
-      .pinch()
-      .wheel()
-      .decelerate()
+    // this.stage
+    //   .drag()
+    //   .pinch()
+    //   .wheel()
+    //   .decelerate()
 
     app.stage.addChild(this.stage)
 
@@ -55,6 +55,34 @@ class Renderer {
     }
 
     this.sprites = new Map
+  }
+
+  vectorLength({x, y}) {
+    return Math.sqrt(x*x + y*y)
+  }
+
+  vectorNormalize({x, y}) {
+    const length = this.vectorLength({x, y})
+    return {
+      x: x / length,
+      y: y / length,
+    }
+  }
+
+  toCoordinateFromSreenCeneter({ x, y }) {
+    const position = this.stage.toWorld(x, y)
+    const center = this.stage.center
+
+    return {
+      x: position.x - center.x,
+      y: position.y - center.y,
+    }
+  }
+
+  toDirectFromCenter(pointOnScreen) {
+    const pointOnScreenFromCeneter = this.toCoordinateFromSreenCeneter(pointOnScreen)
+
+    return this.vectorNormalize(pointOnScreenFromCeneter)
   }
 
   createSprite({ texture: textureName, frame, position, isCentred = false }) {
