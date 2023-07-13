@@ -15,7 +15,7 @@ class Viewport extends Member {
   }
 
   run() {
-    this.camera.setZoom(0.5)
+    this.camera.setZoom(0.3)
 
     this.onEvent(updateEvent, payload => this.update(payload))
   }
