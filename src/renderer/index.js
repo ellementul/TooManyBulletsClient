@@ -3,9 +3,9 @@ const { Viewport } = require("pixi-viewport")
 const { Store } = require("../store")
 
 const ERROR_TEXTURE = "error"
-const DEFAULT_LAYER = "background"
+const DEFAULT_LAYER = "ground"
 const LAYERS = new Map([
-  ["background", 0],
+  ["ground", 0],
   ["walls", 1],
   ["characters", 2],
   ["foreground", 3]
