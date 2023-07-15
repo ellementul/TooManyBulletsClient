@@ -43,12 +43,19 @@ class Actions extends Member {
       this._shotDirect = this.renderer.toDirectFromCenter(event.global)
     })
 
+    this.renderer.stage.on('mousedown', () => {
+      this.shotAction(true)
+    })
+
+    this.renderer.stage.on('mousedown', () => {
+      this.shotAction(false)
+    })
+
     document.addEventListener("keydown", event => {
       if(this.actions[event.key]) {
         const [method, ...args] = this.actions[event.key]
         this[method](true, ...args)
       }
-        
     })
 
     document.addEventListener("keyup", event => {
@@ -56,8 +63,8 @@ class Actions extends Member {
         const [method, ...args] = this.actions[event.key]
         this[method](false, ...args)
       }
-        
     })
+
   }
 
   moveAction(isDown, direct) {
