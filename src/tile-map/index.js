@@ -47,13 +47,17 @@ class TileMap extends Member {
       uuid, 
       texture, 
       position: { row, column }, 
-      frame 
+      frame,
+      isSpawn 
     }, 
     type, 
     tileSize, 
     oldTiles, 
     updatedTiles
   ) {
+    if(isSpawn)
+      return
+
     const position = {
       x: column * tileSize.width,
       y: row * tileSize.height,
