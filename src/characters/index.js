@@ -76,8 +76,8 @@ class Characters extends Member {
       layerName: DEFAULT_LAYER
     })
 
-    character.position.x = position.x
-    character.position.y = position.y
+    character.position.x = Math.floor(position.x)
+    character.position.y = Math.floor(position.y)
 
     return character
   }

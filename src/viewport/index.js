@@ -32,8 +32,8 @@ class Viewport extends Member {
 
   updatePlayerCharacter({ position, box }) {
     this.camera.moveCenter(
-      position.x + box.width / 2, 
-      position.y + box.height / 2
+      Math.floor(position.x + box.width / 2), 
+      Math.floor(position.y + box.height / 2)
     )
   }
   
