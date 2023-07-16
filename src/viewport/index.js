@@ -9,13 +9,15 @@ class Viewport extends Member {
   constructor() {
     super()
 
-    this.camera = (new Renderer).stage
+    this.renderer = new Renderer
+    this.camera = this.renderer.stage
 
     this.onEvent(runEvent, () => this.run())
   }
 
   run() {
     this.camera.setZoom(0.3)
+    this.renderer.setBackground("background")
 
     this.onEvent(updateEvent, payload => this.update(payload))
   }

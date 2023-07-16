@@ -21,10 +21,7 @@ class Renderer {
 
     this.store = new Store
 
-    const app = new Application({
-      width: window.innerWidth,
-      height: window.innerHeight
-    })
+    const app = new Application({ resizeTo: window })
     document.body.appendChild(app.view)
 
     this.stage = new Viewport({
@@ -42,6 +39,8 @@ class Renderer {
     //   .wheel()
     //   .decelerate()
 
+    this.background = new Container
+    app.stage.addChild(this.background)
     app.stage.addChild(this.stage)
 
     const layers = []
@@ -83,6 +82,14 @@ class Renderer {
     const pointOnScreenFromCeneter = this.toCoordinateFromSreenCeneter(pointOnScreen)
 
     return this.vectorNormalize(pointOnScreenFromCeneter)
+  }
+
+  setBackground(texture) {
+    const baseTexture = this.store.getTexture(texture)
+    const background = new Sprite(baseTexture)
+    background.position.x = 0
+    background.position.y = 0
+    this.background.addChild(background)
   }
 
   createSprite({ texture: textureName, frame, position, isCentred = false }) {
