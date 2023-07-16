@@ -5,5 +5,6 @@
   "default_head": "assets/default_head.svg",
   "default_body": "assets/default_body.svg",
   "default_bullet": "assets/default_bullet.svg",
-  "background": "assets/background.jpg"
+  "background": "assets/background.jpg",
+  "base_ground": "assets/tilesets/base.svg"
 }
