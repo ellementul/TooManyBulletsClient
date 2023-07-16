@@ -1,5 +1,6 @@
-const { Application, Texture, Sprite, Container } = require("pixi.js")
+const { Application, Texture, Sprite, Container, Ticker, UPDATE_PRIORITY } = require("pixi.js")
 const { Viewport } = require("pixi-viewport")
+const { addStats } = require('pixi-stats')
 const { Store } = require("../store")
 
 const ERROR_TEXTURE = "error"
@@ -21,8 +22,14 @@ class Renderer {
 
     this.store = new Store
 
+    
+
     const app = new Application({ resizeTo: window })
     document.body.appendChild(app.view)
+
+    const stats = addStats(document, app)
+    const ticker = Ticker.shared
+    ticker.add(stats.update, stats, UPDATE_PRIORITY.UTILITY)
 
     this.stage = new Viewport({
       screenWidth: window.innerWidth,
