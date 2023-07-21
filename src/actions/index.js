@@ -27,11 +27,11 @@ class Actions extends Member {
     this.renderer = new Renderer
 
     this.actions = {
-      "w": ["moveAction", TOP],
-      "d": ["moveAction", RIGHT],
-      "s": ["moveAction", BOTTOM],
-      "a": ["moveAction", LEFT],
-      " ": ["shotAction"],
+      "KeyW": ["moveAction", TOP],
+      "KeyD": ["moveAction", RIGHT],
+      "KeyS": ["moveAction", BOTTOM],
+      "KeyA": ["moveAction", LEFT],
+      "Space": ["shotAction"],
     }
 
     this._movingDirect = { x: 0, y: 0 }
@@ -47,20 +47,20 @@ class Actions extends Member {
       this.shotAction(true)
     })
 
-    this.renderer.stage.on('mousedown', () => {
+    this.renderer.stage.on('mouseup', () => {
       this.shotAction(false)
     })
 
     document.addEventListener("keydown", event => {
-      if(this.actions[event.key]) {
-        const [method, ...args] = this.actions[event.key]
+      if(this.actions[event.code]) {
+        const [method, ...args] = this.actions[event.code]
         this[method](true, ...args)
       }
     })
 
     document.addEventListener("keyup", event => {
-      if(this.actions[event.key]) {
-        const [method, ...args] = this.actions[event.key]
+      if(this.actions[event.code]) {
+        const [method, ...args] = this.actions[event.code]
         this[method](false, ...args)
       }
     })
