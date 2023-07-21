@@ -16,7 +16,7 @@ class Viewport extends Member {
   }
 
   run() {
-    this.camera.setZoom(0.3)
+    this.camera.setZoom(0.5)
     this.renderer.setBackground("background")
 
     this.onEvent(updateEvent, payload => this.update(payload))
