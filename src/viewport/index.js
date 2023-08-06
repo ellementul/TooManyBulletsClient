@@ -12,11 +12,17 @@ class Viewport extends Member {
     this.renderer = new Renderer
     this.camera = this.renderer.stage
 
+    this.camera
+    //   .drag()
+    //   .pinch()
+      .wheel()
+    //   .decelerate()
+
     this.onEvent(runEvent, () => this.run())
   }
 
   run() {
-    this.camera.setZoom(0.5)
+    this.camera.setZoom(1)
     this.renderer.setBackground("background")
 
     this.onEvent(updateEvent, payload => this.update(payload))

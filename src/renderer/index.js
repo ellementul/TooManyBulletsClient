@@ -40,12 +40,6 @@ class Renderer {
       events: app.renderer.events
     })
 
-    // this.stage
-    //   .drag()
-    //   .pinch()
-    //   .wheel()
-    //   .decelerate()
-
     this.background = new Container
     app.stage.addChild(this.background)
     app.stage.addChild(this.stage)

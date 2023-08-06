@@ -1,10 +1,11 @@
 {
   "error": "assets/error_tile.svg",
-  "ground": "assets/tilesets/tileset_default.svg",
-  "woods": "assets/tilesets/walls_default.svg",
+  "background": "assets/background.png",
+
+  "platforms": "assets/tilesets/platforms.svg",
+  "spawns": "assets/tilesets/empty.svg",
+
   "default_head": "assets/characters/bob/head.svg",
   "default_body": "assets/characters/bob/body.svg",
-  "default_bullet": "assets/default_bullet.svg",
-  "background": "assets/background.jpg",
-  "base_ground": "assets/tilesets/base.svg"
+  "default_bullet": "assets/default_bullet.svg"
 }
