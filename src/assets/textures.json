@@ -3,6 +3,8 @@
   "background": "assets/background.png",
 
   "platforms": "assets/tilesets/platforms.svg",
+  "beams": "assets/tilesets/beams.svg",
+  "banners": "assets/tilesets/banners.svg",
   "spawns": "assets/tilesets/empty.svg",
 
   "default_head": "assets/characters/bob/head.svg",
