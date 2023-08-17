@@ -130,11 +130,18 @@ class Renderer {
 
   addSpritesAsOne({ uuid, sprites: newSprites, layerName }) {
     const container = new Container
-    newSprites.map( newSprite => container.addChild(this.createSprite(newSprite)) )
+    container.subSprites = {}
+
+    newSprites.map( newSprite => {
+      const sprite = this.createSprite(newSprite)
+      container.addChild(sprite)
+      container.subSprites[newSprite.name] = sprite
+    })
 
     LAYERS.get(layerName || DEFAULT_LAYER).addChild(container)
 
     this.sprites.set(uuid, container)
+
     return container
   }
 

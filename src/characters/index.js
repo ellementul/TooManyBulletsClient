@@ -4,6 +4,10 @@ const { Renderer } = require("../renderer")
 const runEvent = require("../events/ready-resources")
 const updateEvent = require("../events/update-characters")
 
+const HIDDEN = "Hidden"
+const STAND = "Stay"
+const KILLED = "Killed"
+
 const DEFAULT_LAYER = "characters"
 class Characters extends Member {
   constructor() {
@@ -30,7 +34,8 @@ class Characters extends Member {
       else {
         const sprite = this.characters.get(character.uuid)
         oldCharacters.delete(character.uuid)
-        this.updateCharacter(sprite, character)
+        this.updateState(sprite, character.state)
+        this.updatePosition(sprite, character.position)
         newCharacters.set(character.uuid, sprite)
       }
     })
@@ -42,7 +47,7 @@ class Characters extends Member {
     this.characters = newCharacters
   }
 
-  createCharacter({ uuid, position, box: hitBox }) {
+  createCharacter({ uuid, state, position, box: hitBox }) {
 
     const viewBox = { width: 256, height: 360 }
     const shiftPosition = { 
@@ -63,11 +68,13 @@ class Characters extends Member {
       uuid,
       sprites: [
         {
+          name: "body",
           position: coordinate_body,
           texture: "default_body",
           isCentred: true
         },
         {
+          name: "head",
           position: coordinate_head,
           texture: "default_head",
           isCentred: true
@@ -76,15 +83,36 @@ class Characters extends Member {
       layerName: DEFAULT_LAYER
     })
 
-    character.position.x = Math.floor(position.x)
-    character.position.y = Math.floor(position.y)
+    character.states = {
+      [HIDDEN]: [],
+      [STAND]: ["body", "head"]
+    }
+
+    this.updateState(character, state)
+    this.updatePosition(character, position)
 
     return character
   }
 
-  updateCharacter(character, { position }) {
-    character.position.x = position.x
-    character.position.y = position.y
+  updatePosition(character, position) {
+    character.position.x = Math.floor(position.x)
+    character.position.y = Math.floor(position.y)
+  }
+
+  updateState(character, state) {
+    if(character.currentState === state) return
+
+    character.currentState = state
+
+    for (const spriteName in character.subSprites) {
+      const sprite = character.subSprites[spriteName]
+      const currentStateOfSprites = character.states[character.currentState]
+
+      if(currentStateOfSprites.includes(spriteName))
+        sprite.visible = true
+      else
+        sprite.visible = false
+    }
   }
 }
 
