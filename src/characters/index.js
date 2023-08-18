@@ -1,5 +1,6 @@
 const { Member } = require('@ellementul/united-events-environment')
 const { Renderer } = require("../renderer")
+const { BilinearAnimator } = require("../animators")
 
 const runEvent = require("../events/ready-resources")
 const updateEvent = require("../events/update-characters")
