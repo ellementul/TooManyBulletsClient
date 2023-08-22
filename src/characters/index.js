@@ -101,7 +101,7 @@ class Characters extends Member {
       [HIDDEN]: [],
       [STAND]: ["body", "head"],
       [KILLED]: [],
-      [FALLING]: ["body", "head"]
+      [FALLING]: []
     }
 
     this.updateState(character, state)
@@ -143,7 +143,7 @@ class Characters extends Member {
       this.spawnAnimation(character)
 
     if(prevState === STAND && state === FALLING)
-      this.fallingAnimation(character)
+      this.spawnAnimation(character)
 
     if(prevState === STAND && state === KILLED)
       this.spawnAnimation(character)
@@ -161,16 +161,6 @@ class Characters extends Member {
       spawn_effects.visible = false
       spawn_effects.scale.y = 1
     })
-    animator.start()
-  }
-
-  fallingAnimation(character) {
-    const animator = new LinearAnimator({ time: 2000, beginValue: 10, endValue: 100 })
-
-    animator.onUpdateState(value => {
-      character.position.y += value
-    })
-    animator.onComplete(() => {})
     animator.start()
   }
 }
