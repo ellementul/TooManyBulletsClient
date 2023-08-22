@@ -6,6 +6,7 @@
   "beams": "assets/tilesets/beams.svg",
   "banners": "assets/tilesets/banners.svg",
   "spawns": "assets/tilesets/empty.svg",
+  "teleport": "assets/teleport.svg",
 
   "default_head": "assets/characters/bob/head.svg",
   "default_body": "assets/characters/bob/body.svg",

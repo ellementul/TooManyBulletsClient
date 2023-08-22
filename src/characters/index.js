@@ -1,6 +1,6 @@
 const { Member } = require('@ellementul/united-events-environment')
 const { Renderer } = require("../renderer")
-const { BilinearAnimator } = require("../animators")
+const { LinearAnimator } = require("../animators")
 
 const runEvent = require("../events/ready-resources")
 const updateEvent = require("../events/update-characters")
@@ -8,6 +8,7 @@ const updateEvent = require("../events/update-characters")
 const HIDDEN = "Hidden"
 const STAND = "Stay"
 const KILLED = "Killed"
+const FALLING = "Falling"
 
 const DEFAULT_LAYER = "characters"
 class Characters extends Member {
@@ -24,20 +25,19 @@ class Characters extends Member {
     this.onEvent(updateEvent, payload => this.update(payload))
   }
 
-  update({ state: characters }) {
+  update({ state: charactersData }) {
     const oldCharacters = this.characters
     const newCharacters = new Map
 
-    characters.forEach(character => {
-      if(!this.characters.has(character.uuid)) {
-        newCharacters.set(character.uuid, this.createCharacter(character))
+    charactersData.forEach(characterData => {
+      if(!this.characters.has(characterData.uuid)) {
+        newCharacters.set(characterData.uuid, this.createCharacter(characterData))
       }
       else {
-        const sprite = this.characters.get(character.uuid)
-        oldCharacters.delete(character.uuid)
-        this.updateState(sprite, character.state)
-        this.updatePosition(sprite, character.position)
-        newCharacters.set(character.uuid, sprite)
+        const character = this.characters.get(characterData.uuid)
+        oldCharacters.delete(characterData.uuid)
+        this.updateCharacter(character, characterData)
+        newCharacters.set(characterData.uuid, character)
       }
     })
 
@@ -64,6 +64,10 @@ class Characters extends Member {
       x: 128 + shiftPosition.x,
       y: 232 + shiftPosition.y
     }
+    const coordinate_spawn_effects = {
+      x: 128 + shiftPosition.x,
+      y: 232 + shiftPosition.y
+    }
 
     const character = this.renderer.addSpritesAsOne({
       uuid,
@@ -80,19 +84,35 @@ class Characters extends Member {
           texture: "default_head",
           isCentred: true
         },
+        {
+          name: "spawn_effects",
+          position: coordinate_spawn_effects,
+          texture: "teleport",
+          isCentred: true
+        },
       ],
       layerName: DEFAULT_LAYER
     })
 
+    const default_state = "INIT"
+    character.currentState = default_state
     character.states = {
+      [default_state]: [],
       [HIDDEN]: [],
-      [STAND]: ["body", "head"]
+      [STAND]: ["body", "head"],
+      [KILLED]: [],
+      [FALLING]: ["body", "head"]
     }
 
     this.updateState(character, state)
     this.updatePosition(character, position)
 
     return character
+  }
+
+  updateCharacter(character, { state, position }){
+    this.updateState(character, state)
+    if(state === STAND) this.updatePosition(character, position)
   }
 
   updatePosition(character, position) {
@@ -103,6 +123,10 @@ class Characters extends Member {
   updateState(character, state) {
     if(character.currentState === state) return
 
+    if(!character.states[state])
+      throw new TypeError(`Unknown animation state: ${state}`)
+
+    const prevState = character.currentState
     character.currentState = state
 
     for (const spriteName in character.subSprites) {
@@ -114,6 +138,40 @@ class Characters extends Member {
       else
         sprite.visible = false
     }
+
+    if(prevState === HIDDEN && state === STAND)
+      this.spawnAnimation(character)
+
+    if(prevState === STAND && state === FALLING)
+      this.fallingAnimation(character)
+
+    if(prevState === STAND && state === KILLED)
+      this.spawnAnimation(character)
+  }
+
+  spawnAnimation(character) {
+    const animator = new LinearAnimator({ reverse: true, time: 700 })
+    const spawn_effects = character.subSprites.spawn_effects
+
+    spawn_effects.visible = true
+    animator.onUpdateState(value => {
+      spawn_effects.scale.y = Math.sqrt(value)
+    })
+    animator.onComplete(() => {
+      spawn_effects.visible = false
+      spawn_effects.scale.y = 1
+    })
+    animator.start()
+  }
+
+  fallingAnimation(character) {
+    const animator = new LinearAnimator({ time: 2000, beginValue: 10, endValue: 100 })
+
+    animator.onUpdateState(value => {
+      character.position.y += value
+    })
+    animator.onComplete(() => {})
+    animator.start()
   }
 }
 

@@ -1,6 +1,78 @@
 const { Ticker } = require("pixi.js")
 
 class Animator {
+  constructor({ time = 1000, reverse = false } = {}) {
+    this.ticker = Ticker.shared
+    
+    this.reverse = reverse
+    this.endTime = time
+    this.coffScale = 1 / time 
+
+    this.updateState = () => { throw new TypeError("You need to setup updating callback via onUpdateState method!") }
+    this.complete = () => {}
+  }
+
+  onUpdateState(cb) {
+    if(typeof cb !== "function") throw new TypeError
+
+    this.updateState = cb
+  }
+
+  onComplete(cb) {
+    if(typeof cb !== "function") throw new TypeError
+
+    this.complete = cb
+  }
+
+  start() {
+    this.initTime = Date.now()
+
+    this.ticker.add(this.tick, this)
+  }
+
+  calcArg(time) {
+    if(!this.reverse)
+      return time * this.coffScale
+    else
+      return 1 - (time * this.coffScale)
+  }
+
+  calcValue(arg) {
+    return arg
+  }
+
+  tick() {
+    const time = Date.now() - this.initTime
+    const arg = this.calcArg(time)
+
+    if(time >= this.endTime) {
+      this.end(this.calcValue(arg))
+      return
+    }
+
+    this.updateState(this.calcValue(arg))
+  }
+
+  end() {
+    this.ticker.remove(this.tick, this)
+    this.complete()
+  }
+}
+
+class LinearAnimator extends Animator {
+  constructor({ time, reverse, beginValue = 0, endValue = 1 } = {}) {
+    super({ time, reverse })
+    
+    this.beginValue = beginValue
+    this.valueRange = endValue - beginValue
+  }
+
+  calcValue(arg) {
+    return this.beginValue + this.valueRange * arg
+  }
+}
+
+class StepsAnimator {
   constructor() {
     this.ticker = Ticker.shared
 
@@ -47,13 +119,13 @@ class Animator {
   }
 }
 
-class BilinearAnimator extends Animator {
-  constructor({ minStep = 50, steps = 10, endTime = 3000, reverse = false } = {}) {
+class BilinearStepsAnimator extends StepsAnimator {
+  constructor({ minStep = 50, steps = 10, time = 3000, reverse = false } = {}) {
     super()
 
     this.minStep = minStep
     this.steps = steps
-    this.endTime = endTime
+    this.endTime = time
     this.reverse = reverse
 
     this.coffR = (this.endTime - this.minStep) / (this.steps * this.steps)
@@ -91,4 +163,4 @@ class BilinearAnimator extends Animator {
   }
 }
 
-module.exports = { BilinearAnimator }
+module.exports = { BilinearStepsAnimator, LinearAnimator }
