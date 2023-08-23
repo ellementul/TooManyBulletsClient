@@ -45,21 +45,7 @@ class Bullets extends Member {
     this.bullets = newBullets
   }
 
-  createBullet({ uuid, position, box: hitBox }) {
-
-    const viewBox = { width: 128, height: 128 }
-
-    const shiftPosition = { 
-      x: (viewBox.width - hitBox.width) /2, 
-      y: (viewBox.height - hitBox.height) /2
-    }
-
-    const getViewPosition = ({ x, y }) => {
-      return {
-        x: x - shiftPosition.x,
-        y: y - shiftPosition.y,
-      }
-    }
+  createBullet({ uuid, position }) {
     
     const texture = DEFAULT_BULLET
 
@@ -68,8 +54,9 @@ class Bullets extends Member {
       sprites: [
         {
           name: "bullet",
-          position: getViewPosition({ x: 0, y: 0}),
-          texture
+          position: { x: 0, y: 0 },
+          texture,
+          isCentred: true
         }
       ],
       layerName: DEFAULT_LAYER

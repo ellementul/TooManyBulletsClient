@@ -8,6 +8,7 @@
   "spawns": "assets/tilesets/empty.svg",
   "teleport": "assets/teleport.svg",
   "gun": "assets/gun_arm.svg",
+  "squart": "assets/squart.svg",
 
   "default_head": "assets/characters/bob/head.svg",
   "default_body": "assets/characters/bob/body.svg",

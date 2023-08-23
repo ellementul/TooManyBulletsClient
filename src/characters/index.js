@@ -4,6 +4,7 @@ const { LinearAnimator } = require("../animators")
 
 const runEvent = require("../events/ready-resources")
 const updateEvent = require("../events/update-characters")
+const shottingDirectChangeEvent = require("../events/shotting-direct-change")
 
 const HIDDEN = "Hidden"
 const STAND = "Stay"
@@ -11,6 +12,12 @@ const KILLED = "Killed"
 const FALLING = "Falling"
 
 const DEFAULT_LAYER = "characters"
+
+const gunShift = {
+  x: -25,
+  y: 25
+}
+
 class Characters extends Member {
   constructor() {
     super()
@@ -22,7 +29,32 @@ class Characters extends Member {
   }
 
   run() {
+    this.onEvent(shottingDirectChangeEvent, payload => this.rotation(payload))
     this.onEvent(updateEvent, payload => this.update(payload))
+  }
+
+  rotation({ playerUuid, state: direct }) {
+    this.characters.forEach(character => {
+      if(character.playerUuid === playerUuid)
+        this.rotateGun(character, direct)
+    })
+  }
+
+  rotateGun(character, direct) {
+    const gun = character.subSprites["gun"]
+    const radians = Math.atan2(direct.y, Math.abs(direct.x)) * Math.sign(direct.x)
+
+    gun.rotation = radians 
+
+    if(Math.abs(direct.x) === 0) return
+
+    if(Math.sign(direct.x) !== Math.sign(gun.scale.x)) {
+      gun.position.x += 2 * gunShift.x * Math.sign(direct.x)
+    }
+
+    gun.scale.x = Math.abs(gun.scale.x ) * Math.sign(direct.x)
+
+    
   }
 
   update({ state: charactersData }) {
@@ -48,38 +80,24 @@ class Characters extends Member {
     this.characters = newCharacters
   }
 
-  createCharacter({ uuid, state, position, box: hitBox }) {
-
-    const viewBox = { width: 256, height: 360 }
-
-    const shiftPosition = { 
-      x: (viewBox.width - hitBox.width) /2, 
-      y: (viewBox.height - hitBox.height) /2
-    }
-
-    const getViewPosition = ({ x, y }) => {
-      return {
-        x: x - shiftPosition.x,
-        y: y - shiftPosition.y,
-      }
-    }
+  createCharacter({ uuid, playerUuid, state, position }) {
 
     const coordinate_head = {
-      x: 128,
-      y: 64
+      x: 0,
+      y: -112
     }
     const coordinate_body = {
-      x: 128,
-      y: 232
+      x: 0,
+      y: 52
     }
     const coordinate_spawn_effects = {
-      x: 128,
-      y: 232
+      x: 0,
+      y: 0
     }
 
-    const coordinatesGun = {
-      x: viewBox.width / 2 - 25,
-      y: viewBox.height / 2 + 25
+    const coordinatesSquart = {
+      x: 0,
+      y: 0
     }
 
     const character = this.renderer.addSpritesAsOne({
@@ -87,26 +105,32 @@ class Characters extends Member {
       sprites: [
         {
           name: "body",
-          position: getViewPosition(coordinate_body),
+          position: coordinate_body,
           texture: "default_body",
           isCentred: true
         },
         {
           name: "head",
-          position: getViewPosition(coordinate_head),
+          position: coordinate_head,
           texture: "default_head",
           isCentred: true
         },
         {
           name: "spawn_effects",
-          position: getViewPosition(coordinate_spawn_effects),
+          position: coordinate_spawn_effects,
           texture: "teleport",
           isCentred: true
         },
         {
           name: "gun",
-          position: getViewPosition(coordinatesGun),
+          position: gunShift,
           texture: "gun",
+          isCentred: true
+        },
+        {
+          name: "squart",
+          position: coordinatesSquart,
+          texture: "squart",
           isCentred: true
         },
       ],
@@ -125,6 +149,8 @@ class Characters extends Member {
 
     this.updateState(character, state)
     this.updatePosition(character, position)
+
+    character.playerUuid = playerUuid
 
     return character
   }

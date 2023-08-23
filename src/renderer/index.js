@@ -135,6 +135,7 @@ class Renderer {
     newSprites.map( newSprite => {
       const sprite = this.createSprite(newSprite)
       container.addChild(sprite)
+      sprite.position = container.toGlobal(newSprite.position)
       container.subSprites[newSprite.name] = sprite
     })
 
