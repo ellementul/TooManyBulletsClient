@@ -21,20 +21,20 @@ class Bullets extends Member {
     this.onEvent(updateEvent, payload => this.update(payload))
   }
 
-  update({ state: bullets }) {
+  update({ state: bulletsData }) {
 
     const oldBullets = this.bullets
     const newBullets = new Map
 
-    bullets.forEach(bullet => {
-      if(!this.bullets.has(bullet.uuid)) {
-        newBullets.set(bullet.uuid, this.createBullet(bullet))
+    bulletsData.forEach(bulletData => {
+      if(!this.bullets.has(bulletData.uuid)) {
+        newBullets.set(bulletData.uuid, this.createBullet(bulletData))
       }
       else {
-        const sprite = oldBullets.get(bullet.uuid)
-        oldBullets.delete(bullet.uuid)
-        this.updateBullet(sprite, bullet)
-        newBullets.set(bullet.uuid, sprite)
+        const bullet = oldBullets.get(bulletData.uuid)
+        oldBullets.delete(bulletData.uuid)
+        this.updatePosition(bullet, bulletData.position)
+        newBullets.set(bulletData.uuid, bullet)
       }
     })
 
@@ -45,14 +45,42 @@ class Bullets extends Member {
     this.bullets = newBullets
   }
 
-  createBullet({ uuid, position }) {
+  createBullet({ uuid, position, box: hitBox }) {
+
+    const viewBox = { width: 128, height: 128 }
+
+    const shiftPosition = { 
+      x: (viewBox.width - hitBox.width) /2, 
+      y: (viewBox.height - hitBox.height) /2
+    }
+
+    const getViewPosition = ({ x, y }) => {
+      return {
+        x: x - shiftPosition.x,
+        y: y - shiftPosition.y,
+      }
+    }
     
     const texture = DEFAULT_BULLET
-    const layerName = DEFAULT_LAYER
-    return this.renderer.addSprite({ uuid, texture, position, layerName })
+
+    const bullet =  this.renderer.addSpritesAsOne({
+      uuid,
+      sprites: [
+        {
+          name: "bullet",
+          position: getViewPosition({ x: 0, y: 0}),
+          texture
+        }
+      ],
+      layerName: DEFAULT_LAYER
+    })
+
+    this.updatePosition(bullet, position)
+
+    return bullet
   }
 
-  updateBullet(bullet, { position }) {
+  updatePosition(bullet, position) {
     bullet.position.x = position.x
     bullet.position.y = position.y
   }

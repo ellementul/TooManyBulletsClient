@@ -51,22 +51,35 @@ class Characters extends Member {
   createCharacter({ uuid, state, position, box: hitBox }) {
 
     const viewBox = { width: 256, height: 360 }
+
     const shiftPosition = { 
-      x: (hitBox.width - viewBox.width) /2, 
-      y: (hitBox.height - viewBox.height) /2
+      x: (viewBox.width - hitBox.width) /2, 
+      y: (viewBox.height - hitBox.height) /2
+    }
+
+    const getViewPosition = ({ x, y }) => {
+      return {
+        x: x - shiftPosition.x,
+        y: y - shiftPosition.y,
+      }
     }
 
     const coordinate_head = {
-      x: 128 + shiftPosition.x,
-      y: 64 + shiftPosition.y
+      x: 128,
+      y: 64
     }
     const coordinate_body = {
-      x: 128 + shiftPosition.x,
-      y: 232 + shiftPosition.y
+      x: 128,
+      y: 232
     }
     const coordinate_spawn_effects = {
-      x: 128 + shiftPosition.x,
-      y: 232 + shiftPosition.y
+      x: 128,
+      y: 232
+    }
+
+    const coordinatesGun = {
+      x: viewBox.width / 2 - 25,
+      y: viewBox.height / 2 + 25
     }
 
     const character = this.renderer.addSpritesAsOne({
@@ -74,20 +87,26 @@ class Characters extends Member {
       sprites: [
         {
           name: "body",
-          position: coordinate_body,
+          position: getViewPosition(coordinate_body),
           texture: "default_body",
           isCentred: true
         },
         {
           name: "head",
-          position: coordinate_head,
+          position: getViewPosition(coordinate_head),
           texture: "default_head",
           isCentred: true
         },
         {
           name: "spawn_effects",
-          position: coordinate_spawn_effects,
+          position: getViewPosition(coordinate_spawn_effects),
           texture: "teleport",
+          isCentred: true
+        },
+        {
+          name: "gun",
+          position: getViewPosition(coordinatesGun),
+          texture: "gun",
           isCentred: true
         },
       ],
@@ -99,7 +118,7 @@ class Characters extends Member {
     character.states = {
       [default_state]: [],
       [HIDDEN]: [],
-      [STAND]: ["body", "head"],
+      [STAND]: ["body", "head", "gun"],
       [KILLED]: [],
       [FALLING]: []
     }
