@@ -1,8 +1,11 @@
 const { EventFactory, Types } = require('@ellementul/united-events-environment')
 const type = Types.Object.Def({
   system: "Actions",
-  entity: "IsShot",
+  entity: "ShottingDirect",
   playerUuid: Types.UUID.Def(),
-  state: Types.Bool.Def()
+  state: {
+    x: Types.Number.Def(1, -1, 3),
+    y: Types.Number.Def(1, -1, 3)
+  }
 }, true) 
 module.exports = EventFactory(type)
