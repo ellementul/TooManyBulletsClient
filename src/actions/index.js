@@ -1,4 +1,5 @@
 const { Member, events: { time } } = require('@ellementul/united-events-environment')
+const joysticksManager = require("nipplejs")
 const { Renderer } = require("../renderer")
 const { getPlayerUuid } = require("../player")
 
@@ -64,7 +65,78 @@ class Actions extends Member {
       }
     }
 
+    if(this.renderer.isMobile)
+      this.addJoystick()
+
     this.onEvent(time, () => this.tick())
+  }
+
+  movingZone() {
+    const movingZone = document.createElement('div')
+    movingZone.id = "movingZone"
+    movingZone.style.width = '50vw'
+    movingZone.style.height = '50vh'
+    movingZone.style.position = 'absolute'
+    movingZone.style.left = 0
+    movingZone.style.bottom = 0
+
+    document.body.appendChild(movingZone)
+
+    return movingZone
+  }
+
+  shottingZone() {
+    const shottingZone = document.createElement('div')
+    shottingZone.id = "movingZone"
+    shottingZone.style.width = '50vw'
+    shottingZone.style.height = '50vh'
+    shottingZone.style.position = 'absolute'
+    shottingZone.style.right = 0
+    shottingZone.style.bottom = 0
+
+    document.body.appendChild(shottingZone)
+
+    return shottingZone
+  }
+
+  addJoystick() {
+    const movingJoystick = joysticksManager.create({
+      zone: this.movingZone(), 
+      mode: "static",
+      position: { bottom: "50%", left: "50%" },
+      size: 400,
+      threshold: 0
+    })[0]
+
+    movingJoystick.on('move', (_, { vector }) => {
+      vector.y *= -1
+      this.setMovingDirect(this.directs.precision(vector))
+    })
+
+    movingJoystick.on('end', () => {
+      this.setMovingDirect({ x: 0, y: 0 })
+    })
+
+    const shottingJoystick = joysticksManager.create({
+      zone: this.shottingZone(),
+      mode: "static",
+      position: { bottom: "50%", right: "50%" },
+      size: 400,
+      threshold: 0
+    })[0]
+
+    shottingJoystick.on('start', () => {
+      this.shotAction(true)
+    })
+
+    shottingJoystick.on('move', (_, { vector }) => {
+      vector.y *= -1
+      this.rotateAction(vector)
+    })
+
+    shottingJoystick.on('end', () => {
+      this.shotAction(false)
+    })
   }
 
   moveAction(isDown, direct) {
