@@ -35,6 +35,7 @@ class Renderer {
     const app = new Application({ resizeTo: window })
     document.body.appendChild(app.view)
 
+    this.canvasElement = app.view
     this.events = app.renderer.events
 
     if(isDev)

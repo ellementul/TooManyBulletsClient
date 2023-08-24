@@ -26,8 +26,11 @@ class Viewport extends Member {
     // }
     
     this.renderer.events.cursorStyles["default"] = "url('./assets/cursor.svg'), auto"
+    
+    // this.renderer.canvasElement.requestFullscreen().catch(alert)
 
-    console.log(Screen.orientation)
+    // if(this.renderer.isMobile)
+    //   screen.orientation.lock("landscape-primary").then(alert).catch(alert)
 
     this.onEvent(runEvent, () => this.run())
   }
