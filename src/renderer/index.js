@@ -22,10 +22,10 @@ class Renderer {
 
     this.store = new Store
 
-    
-
     const app = new Application({ resizeTo: window })
     document.body.appendChild(app.view)
+
+    this.events = app.renderer.events
 
     const stats = addStats(document, app)
     const ticker = Ticker.shared

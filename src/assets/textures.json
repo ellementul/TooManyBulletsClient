@@ -12,5 +12,6 @@
 
   "default_head": "assets/characters/bob/head.svg",
   "default_body": "assets/characters/bob/body.svg",
-  "default_bullet": "assets/default_bullet.svg"
+  "default_bullet": "assets/default_bullet.svg",
+  "default_cursor": "assets/cursor.svg"
 }

@@ -15,14 +15,22 @@ class Viewport extends Member {
     this.camera
     //   .drag()
     //   .pinch()
-      .wheel()
+    .wheel()
+    .clampZoom({ minScale: 0.5, maxScale: 1 })
+      
     //   .decelerate()
+
+    // this.renderer.events.cursorStyles["default"] = (mode) => {
+    //   cursor.texture = this.renderer.store.getTexture("default_cursor")
+    // }
+    
+    this.renderer.events.cursorStyles["default"] = "url('./assets/cursor.svg'), auto"
 
     this.onEvent(runEvent, () => this.run())
   }
 
   run() {
-    this.camera.setZoom(1)
+    this.camera.setZoom(1, true)
     this.renderer.setBackground("background")
 
     this.onEvent(updateEvent, payload => this.update(payload))
