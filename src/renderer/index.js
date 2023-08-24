@@ -1,7 +1,9 @@
 const { Application, Texture, Sprite, Container, Ticker, UPDATE_PRIORITY } = require("pixi.js")
 const { Viewport } = require("pixi-viewport")
-const { addStats } = require('pixi-stats')
+const { PIXIHooks, StatsJSAdapter, Stats, Panel } = require('pixi-stats')
 const { Store } = require("../store")
+
+const isDev = true
 
 const ERROR_TEXTURE = "error"
 const DEFAULT_LAYER = "ground"
@@ -27,9 +29,8 @@ class Renderer {
 
     this.events = app.renderer.events
 
-    const stats = addStats(document, app)
-    const ticker = Ticker.shared
-    ticker.add(stats.update, stats, UPDATE_PRIORITY.UTILITY)
+    if(isDev)
+      this.addStats(app)
 
     this.stage = new Viewport({
       screenWidth: window.innerWidth,
@@ -83,6 +84,25 @@ class Renderer {
     const pointOnScreenFromCeneter = this.toCoordinateFromSreenCeneter(pointOnScreen)
 
     return this.vectorNormalize(pointOnScreenFromCeneter)
+  }
+
+  addStats(app) {
+    const stats = new Stats();
+    const pixiHooks = new PIXIHooks(app)
+    const adapter = new StatsJSAdapter(pixiHooks, stats)
+
+    this.pingPanel = new Panel("Ping", "blue", "green")
+    stats.addPanel(this.pingPanel)
+  
+    document.body.appendChild(adapter.stats.domElement)
+
+    const ticker = Ticker.shared
+    ticker.add(stats.update, stats, UPDATE_PRIORITY.UTILITY)
+  }
+
+  updatePing(ping, maxPing) {
+    if(this.pingPanel)
+      this.pingPanel.update(ping, maxPing)
   }
 
   setBackground(texture) {

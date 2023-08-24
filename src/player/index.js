@@ -1,5 +1,6 @@
 const { Member } = require('@ellementul/united-events-environment')
 const { Store } = require("../store")
+const { Renderer } = require("../renderer")
 
 const pingEvent = require("../events/ping-players")
 const pongEvent = require("../events/pong-players")
@@ -18,10 +19,14 @@ class Player extends Member {
     this.onEvent(pingEvent, () => this.ping())
 
     this._state = WAIT_FIRST_PING
+    this.lastPingTime = null
+    this.maxPingDeltaTime = 0
   }
 
   firstPing() {
     this._state = GOT_FIRST_PING
+    this.renderer = new Renderer
+
     const store = new Store
     store.loadResources()
       .then(() => this.loadRenderer())
@@ -35,10 +40,23 @@ class Player extends Member {
   }
 
   ping() {
-    if(this._state == WAIT_FIRST_PING)
-      return this.firstPing()
+    if(this._state == WAIT_FIRST_PING) {
+      this.lastPingTime = Date.now()
+      this.firstPing()
+    }
+    else {
+      const pingTime = Date.now() - this.lastPingTime
 
-    this.send(pongEvent, { playerUuid: this.uuid })
+      if(pingTime > this.maxPingDeltaTime)
+        this.maxPingDeltaTime = pingTime
+      
+      this.lastPingTime = Date.now()  
+      this.send(pongEvent, { 
+        playerUuid: this.uuid,
+        deltaTime: pingTime,
+        maxDeltaTime: this.maxPingDeltaTime
+      })
+    }
   }
 }
 
