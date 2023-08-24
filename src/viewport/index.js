@@ -4,6 +4,7 @@ const { Renderer } = require("../renderer")
 
 const runEvent = require("../events/ready-resources")
 const updateEvent = require("../events/update-characters")
+const pongEvent = require("../events/pong-players")
 
 class Viewport extends Member {
   constructor() {
@@ -26,6 +27,8 @@ class Viewport extends Member {
     
     this.renderer.events.cursorStyles["default"] = "url('./assets/cursor.svg'), auto"
 
+    console.log(Screen.orientation)
+
     this.onEvent(runEvent, () => this.run())
   }
 
@@ -34,6 +37,12 @@ class Viewport extends Member {
     this.renderer.setBackground("background")
 
     this.onEvent(updateEvent, payload => this.update(payload))
+    this.onEvent(pongEvent, payload => this.showPong(payload))
+  }
+
+  showPong({ playerUuid, deltaTime, maxDeltaTime }) {
+    if(getPlayerUuid() === playerUuid)
+      this.renderer.updatePing(deltaTime, maxDeltaTime)
   }
 
   update({ state: characters }) {
