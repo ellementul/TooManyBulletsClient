@@ -113,7 +113,7 @@ class GameStats {
       list.push(`<p>${stateName}: ${this.states[stateName]}`)
     }
 
-    this.widget.innerHTML = list.join("/n")
+    this.widget.innerHTML = list.join("\n")
   }
 }
 
