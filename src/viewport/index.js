@@ -8,6 +8,7 @@ const updateEvent = require("../events/update-characters")
 
 const updatePlayerCount = require("../events/update-players-count")
 const updateWallsCount = require("../events/update-walls-count")
+const updateKillsEvent = require("../events/update-kills-count")
 
 const pongEvent = require("../events/pong-players")
 
@@ -50,6 +51,7 @@ class Viewport extends Member {
 
     this.onEvent(updatePlayerCount, payload => this.updateStates(payload))
     this.onEvent(updateWallsCount, payload => this.updateStates(payload))
+    this.onEvent(updateKillsEvent, payload => this.updateStates(payload))
 
     this.onEvent(pongEvent, payload => this.showPong(payload))
   }
