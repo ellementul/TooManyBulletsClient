@@ -34,17 +34,16 @@ class Player extends Member {
   }
 
   loadRenderer() {
-    this.send(loadRenderEvent)
-    this.ping()
     this._state = READY
+    this.send(loadRenderEvent)
   }
 
   ping() {
-    if(this._state == WAIT_FIRST_PING) {
+    if(this._state === WAIT_FIRST_PING) {
       this.lastPingTime = Date.now()
       this.firstPing()
     }
-    else {
+    if(this._state === READY) {
       const pingTime = Date.now() - this.lastPingTime
 
       if(pingTime > this.maxPingDeltaTime)
@@ -56,6 +55,9 @@ class Player extends Member {
         deltaTime: pingTime,
         maxDeltaTime: this.maxPingDeltaTime
       })
+    }
+    if(this._state === GOT_FIRST_PING) {
+      console.log("GOT_FIRST_PING is state")
     }
   }
 }
