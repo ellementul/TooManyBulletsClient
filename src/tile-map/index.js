@@ -18,8 +18,17 @@ class TileMap extends Member {
     this.onEvent(updateEvent, payload => this.update(payload))
   }
 
-  update({ state: { layers } }){
-    layers.forEach(layer => this.updateLayer(layer));
+  update({ state: { layers: layersData, fullUpdate } }){
+    layersData.forEach(layerData => this.updateLayer(layerData))
+
+    if(fullUpdate) {
+      const existedUuids = layersData.map(({ uuid }) => uuid)
+
+      for (const [uuid, layer] of this.layers) {
+        if(!existedUuids.includes(uuid))
+          this.deleteLayer(layer)
+      }
+    }
   }
 
   updateLayer(layer) {
@@ -40,6 +49,14 @@ class TileMap extends Member {
     this.layers.get(uuid).tiles = updatedTiles
 
     oldTiles.forEach(tileUuid => this.renderer.deleteSprite(tileUuid, type))
+  }
+
+  deleteLayer(layer) {
+    const { uuid, type, tiles } = layer
+
+    tiles.forEach(tileUuid => this.renderer.deleteSprite(tileUuid, type))
+
+    this.layers.delete(uuid, type)
   }
 
   updateTiles(
