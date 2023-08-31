@@ -3,8 +3,8 @@
   "background": "assets/background.png",
 
   "platforms": "assets/tilesets/platforms.svg",
-  "beams": "assets/tilesets/beams.svg",
-  "banners": "assets/tilesets/banners.svg",
+  "trash1": "assets/tilesets/trash1.svg",
+  "trash2": "assets/tilesets/trash2.svg",
   "spawns": "assets/tilesets/empty.svg",
   "teleport": "assets/teleport.svg",
   "gun": "assets/gun_arm.svg",
