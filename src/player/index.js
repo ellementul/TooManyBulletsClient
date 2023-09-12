@@ -27,6 +27,8 @@ class Player extends Member {
     this._state = GOT_FIRST_PING
     this.renderer = new Renderer
 
+    console.log("Got first ping!")
+
     const store = new Store
     store.loadResources()
       .then(() => this.loadRenderer())
