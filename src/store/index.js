@@ -1,5 +1,6 @@
+const fs = require('fs')
+
 const { Assets }  = require("pixi.js")
-const texturesConfig = require("../../data/assets/textures.json")
 
 let single = null
 class Store {
@@ -12,7 +13,7 @@ class Store {
     this.textures = new Map
   }
 
-  async loadTextures() {
+  async loadTextures(texturesConfig) {
     Assets.addBundle("textures", texturesConfig)
     const textures = await Assets.loadBundle("textures")
     for (const key in textures) {
@@ -21,8 +22,10 @@ class Store {
     return true
   }
 
-  async loadResources () {
-    return await this.loadTextures()
+  async loadResources (paths) {
+    const file = fs.readFileSync(paths.textures, 'utf8')
+
+    return await this.loadTextures(JSON.parse(file))
   }
 
   getTexture(uid) {

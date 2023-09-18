@@ -29,8 +29,8 @@ class Characters extends Member {
   }
 
   run() {
-    this.onEvent(shottingDirectChangeEvent, payload => this.rotation(payload))
-    this.onEvent(updateEvent, payload => this.update(payload))
+    this.onEvent(shottingDirectChangeEvent, payload => this.rotation(payload), -1)
+    this.onEvent(updateEvent, payload => this.update(payload), -1)
   }
 
   rotation({ playerUuid, state: direct }) {

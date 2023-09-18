@@ -18,7 +18,7 @@ class Bullets extends Member {
   }
 
   run() {
-    this.onEvent(updateEvent, payload => this.update(payload))
+    this.onEvent(updateEvent, payload => this.update(payload), -1)
   }
 
   update({ state: bulletsData }) {

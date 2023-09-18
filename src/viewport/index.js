@@ -31,7 +31,7 @@ class Viewport extends Member {
     //   cursor.texture = this.renderer.store.getTexture("default_cursor")
     // }
     
-    this.renderer.events.cursorStyles["default"] = "url('./assets/cursor.svg'), auto"
+    this.renderer.events.cursorStyles["default"] = "url('./data/assets/cursor.svg'), auto"
     
     // this.renderer.canvasElement.requestFullscreen().catch(alert)
 
@@ -47,13 +47,13 @@ class Viewport extends Member {
 
     this.gameStats = new GameStats
 
-    this.onEvent(updateEvent, payload => this.update(payload))
+    this.onEvent(updateEvent, payload => this.update(payload), -1)
 
-    this.onEvent(updatePlayerCount, payload => this.updateStates(payload))
-    this.onEvent(updateWallsCount, payload => this.updateStates(payload))
-    this.onEvent(updateKillsEvent, payload => this.updateStates(payload))
+    this.onEvent(updatePlayerCount, payload => this.updateStates(payload), -1)
+    this.onEvent(updateWallsCount, payload => this.updateStates(payload), -1)
+    this.onEvent(updateKillsEvent, payload => this.updateStates(payload), -1)
 
-    this.onEvent(pongEvent, payload => this.showPong(payload))
+    this.onEvent(pongEvent, payload => this.showPong(payload), -1)
   }
 
   showPong({ playerUuid, deltaTime, maxDeltaTime }) {

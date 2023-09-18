@@ -1,4 +1,4 @@
-const { Member } = require('@ellementul/united-events-environment')
+const { Member, events: { buildEvent } } = require('@ellementul/united-events-environment')
 const { Store } = require("../store")
 const { Renderer } = require("../renderer")
 
@@ -16,11 +16,16 @@ class Player extends Member {
     super()
 
     single = this
+    this.onEvent(buildEvent, payload => this.setConfig(payload))
     this.onEvent(pingEvent, () => this.ping())
 
     this._state = WAIT_FIRST_PING
     this.lastPingTime = null
     this.maxPingDeltaTime = 0
+  }
+
+  setConfig({ config }) {
+    this.config = config
   }
 
   firstPing() {
@@ -30,13 +35,18 @@ class Player extends Member {
     console.log("Got first ping!")
 
     const store = new Store
-    store.loadResources()
+    console.log("Resources are loading...")
+    store.loadResources(this.config.paths.assets)
       .then(() => this.loadRenderer())
-      .catch(() => { throw new Error("The Error of loading resources!") })
+      .catch((err) => {
+        // console.error(err)
+        throw new Error("The Error of loading resources!")
+      })
   }
 
   loadRenderer() {
     this._state = READY
+    console.log("Resources are loaded!")
     this.send(loadRenderEvent)
   }
 

@@ -32,16 +32,16 @@ class Actions extends Member {
   }
 
   run() {
-    this.renderer.stage.on('mousemove', (event) => {
-      const direct = this.renderer.toDirectFromCenter(event.global)
+    document.body.addEventListener('mousemove', event => {
+      const direct = this.renderer.toDirectFromCenter({ x: event.offsetX, y: event.offsetY})
       this.rotateAction(direct)
     })
 
-    this.renderer.stage.on('mousedown', () => {
+    document.body.addEventListener('mousedown', () => {
       this.shotAction(true)
     })
 
-    this.renderer.stage.on('mouseup', () => {
+    document.body.addEventListener('mouseup', () => {
       this.shotAction(false)
     })
 
@@ -68,7 +68,7 @@ class Actions extends Member {
     if(this.renderer.isMobile)
       this.addJoystick()
 
-    this.onEvent(time, () => this.tick())
+    this.onEvent(time, () => this.tick(), -1)
   }
 
   movingZone() {
