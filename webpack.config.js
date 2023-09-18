@@ -19,7 +19,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: "src/assets", to: "assets" }
+        { from: "data/assets", to: "assets" }
       ],
       options: {
         concurrency: 100,

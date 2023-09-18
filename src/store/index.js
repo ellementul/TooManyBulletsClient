@@ -1,5 +1,5 @@
 const { Assets }  = require("pixi.js")
-const texturesConfig = require("../assets/textures.json")
+const texturesConfig = require("../../data/assets/textures.json")
 
 let single = null
 class Store {
