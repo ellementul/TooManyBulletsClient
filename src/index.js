@@ -2,7 +2,7 @@ const { UnitedEventsEnv, Room } = require('@ellementul/united-events-environment
 const { WsTransport } = require('@ellementul/uee-ws-browser-transport')
 const { Logging } = require('./logging')
 
-function PlayerFactory() {
+function PlayerFactory({ address, baseUrl } = {}) {
 
   const { Player } = require('./player')
   const { Viewport } = require('./viewport')
@@ -22,12 +22,13 @@ function PlayerFactory() {
   const env = new UnitedEventsEnv(room)
   const config = env.getConfig()
   const isBrowserApi = config.env.browserApi
-  const signalAddress = config.signalAddress
+  const signalAddress = address || config.signalAddress
 
   if(!isBrowserApi)
     throw new Error("Render doesn't work without browser API!")
 
   const transport = new WsTransport(signalAddress)
+  transport.url = baseUrl
 
   env.setupLogging({})
   env.build(transport)

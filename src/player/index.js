@@ -16,7 +16,7 @@ class Player extends Member {
     super()
 
     single = this
-    this.onEvent(buildEvent, payload => this.setConfig(payload))
+    this.onEvent(buildEvent, payload => this.setConfig(payload), 1)
     this.onEvent(pingEvent, () => this.ping())
 
     this._state = WAIT_FIRST_PING
@@ -36,10 +36,10 @@ class Player extends Member {
 
     const store = new Store
     console.log("Resources are loading...")
-    store.loadResources(this.config.paths.assets)
+    store.loadResources(this.config.paths.assets, this.config.env.baseUrl)
       .then(() => this.loadRenderer())
       .catch((err) => {
-        // console.error(err)
+        console.error(err)
         throw new Error("The Error of loading resources!")
       })
   }

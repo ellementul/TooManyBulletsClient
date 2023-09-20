@@ -22,10 +22,14 @@ class Store {
     return true
   }
 
-  async loadResources (paths) {
+  async loadResources (paths, baseUrl) {
     const file = fs.readFileSync(paths.textures, 'utf8')
 
-    return await this.loadTextures(JSON.parse(file))
+    const texturesConfig = JSON.parse(file)
+    for (const name in texturesConfig)
+      texturesConfig[name] = baseUrl + texturesConfig[name]
+
+    return await this.loadTextures(texturesConfig, baseUrl)
   }
 
   getTexture(uid) {

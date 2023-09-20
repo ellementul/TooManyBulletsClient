@@ -119,11 +119,11 @@ class Renderer {
   }
 
   setBackground(texture) {
-    // const baseTexture = this.store.getTexture(texture)
-    // const background = new Sprite(baseTexture)
-    // background.position.x = 0
-    // background.position.y = 0
-    // this.background.addChild(background)
+    const baseTexture = this.store.getTexture(texture)
+    const background = new Sprite(baseTexture)
+    background.position.x = 0
+    background.position.y = 0
+    this.background.addChild(background)
   }
 
   createSprite({ texture: textureName, frame, position, isCentred = false }) {
