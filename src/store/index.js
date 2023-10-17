@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 const { Assets }  = require("pixi.js")
 
 let single = null
@@ -23,12 +21,16 @@ class Store {
   }
 
   async loadResources (paths, baseUrl) {
-    const file = fs.readFileSync(paths.textures, 'utf8')
+    const response = await fetch(baseUrl + paths.textures)
 
-    const texturesConfig = JSON.parse(file)
+    if(!response.ok)
+      throw new Error(`I cannot load list of textures from ${baseUrl + paths.textures}`)
+
+    const texturesConfig = await response.json()
     for (const name in texturesConfig)
       texturesConfig[name] = baseUrl + texturesConfig[name]
 
+    console.log(texturesConfig)
     return await this.loadTextures(texturesConfig, baseUrl)
   }
 
