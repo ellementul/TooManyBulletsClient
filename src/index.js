@@ -20,7 +20,9 @@ function PlayerFactory({ transport } = {}) {
 
   const env = new UnitedEventsEnv(room)
 
-  env.setupLogging({})
+  env.setupLogging({
+    logging: Logging()
+  })
   env.build(transport)
 
   return env
