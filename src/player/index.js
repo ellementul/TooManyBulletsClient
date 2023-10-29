@@ -32,10 +32,10 @@ class Player extends Member {
     this._state = GOT_FIRST_PING
     this.renderer = new Renderer
 
-    console.log("Got first ping!")
+    console.info("Got first ping!")
 
     const store = new Store
-    console.log("Resources are loading...")
+    console.info("Resources are loading...")
     store.loadResources(this.config.paths.assets, this.config.env.baseUrl)
       .then(() => this.loadRenderer())
       .catch((err) => {
@@ -46,7 +46,7 @@ class Player extends Member {
 
   loadRenderer() {
     this._state = READY
-    console.log("Resources are loaded!")
+    console.info("Resources are loaded!")
     this.send(loadRenderEvent)
   }
 
@@ -69,7 +69,7 @@ class Player extends Member {
       })
     }
     if(this._state === GOT_FIRST_PING) {
-      console.log("GOT_FIRST_PING is state")
+      console.info("GOT_FIRST_PING is state")
     }
   }
 }

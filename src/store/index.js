@@ -30,7 +30,6 @@ class Store {
     for (const name in texturesConfig)
       texturesConfig[name] = baseUrl + texturesConfig[name]
 
-    console.log(texturesConfig)
     return await this.loadTextures(texturesConfig, baseUrl)
   }
 
