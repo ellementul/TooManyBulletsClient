@@ -1,6 +1,6 @@
 const { Application, Texture, Sprite, Container, Ticker, UPDATE_PRIORITY } = require("pixi.js")
 const { Viewport } = require("pixi-viewport")
-// const { PIXIHooks, StatsJSAdapter, Stats, Panel } = require('pixi-stats')
+const { PIXIHooks, StatsJSAdapter, Stats, Panel } = require('pixi-stats')
 const { Store } = require("../store")
 
 const isDev = true
@@ -100,17 +100,17 @@ class Renderer {
   }
 
   addStats(app) {
-    // const stats = new Stats();
-    // const pixiHooks = new PIXIHooks(app)
-    // const adapter = new StatsJSAdapter(pixiHooks, stats)
+    const stats = new Stats();
+    const pixiHooks = new PIXIHooks(app)
+    const adapter = new StatsJSAdapter(pixiHooks, stats)
 
-    // this.pingPanel = new Panel("Ping", "blue", "green")
-    // stats.addPanel(this.pingPanel)
+    this.pingPanel = new Panel("Ping", "blue", "green")
+    stats.addPanel(this.pingPanel)
   
-    // document.body.appendChild(adapter.stats.domElement)
+    document.body.appendChild(adapter.stats.domElement)
 
-    // const ticker = Ticker.shared
-    // ticker.add(stats.update, stats, UPDATE_PRIORITY.UTILITY)
+    const ticker = Ticker.shared
+    ticker.add(stats.update, stats, UPDATE_PRIORITY.UTILITY)
   }
 
   updatePing(ping, maxPing) {
